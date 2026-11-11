@@ -31,7 +31,7 @@ A simple 2D typing game developed in **C++20** using the **SFML 2.6.1** library.
 
 ### Game Over
 
-![Game Over](screenshots/gameover.png)
+![Game Over](screenshots/GameOver.png)
 
 ## Installation and Running
 

@@ -21,3 +21,8 @@ target_link_libraries(OfficialProject
         sfml-window
         sfml-system
 )
+
+set_target_properties(OfficialProject PROPERTIES
+        VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        XCODE_SCHEME_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)

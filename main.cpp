@@ -67,29 +67,41 @@ int main() {
     BigVectorWords = FileWords("words.txt");
 
     Font font1, font2, font3;
-    font1.loadFromFile("LittleLordFontleroyNF.TTF");
-    font2.loadFromFile("ARIAL.TTF");
-    font3.loadFromFile("Beyond Wonderland.TTF");
+    font1.loadFromFile("assets/fonts/LittleLordFontleroyNF.ttf");
+    font2.loadFromFile("assets/fonts/ARIAL.TTF");
+    font3.loadFromFile("assets/fonts/Beyond Wonderland.ttf");
 
-    Text instruction("Wybierz czcionke", font1, 35);
+    Text instruction("Wybierz czcionke", font1, 55);
     instruction.setFillColor(Color::Red);
-    instruction.setPosition(110, 40);
 
-    Text text1("START", font1, 30);
+    Text text1("START", font1, 50);
     text1.setFillColor(Color::Magenta);
-    text1.setPosition(150, 100);
 
-    Text text2("START", font2, 30);
+    Text text2("START", font2, 50);
     text2.setFillColor(Color::Magenta);
-    text2.setPosition(150, 200);
 
-    Text text3("START", font3, 30);
+    Text text3("START", font3, 50);
     text3.setFillColor(Color::Magenta);
-    text3.setPosition(150, 300);
 
     int ThisFont = -1;
 
-    RenderWindow startWindow(VideoMode(400, 400), "Start");
+    RenderWindow startWindow(VideoMode(600, 600), "Start");
+
+
+    auto centerText = [&](Text& text, float y) {
+        FloatRect bounds = text.getLocalBounds();
+        text.setOrigin(bounds.left + bounds.width / 2.f,
+                       bounds.top + bounds.height / 2.f);
+        text.setPosition(startWindow.getSize().x / 2.f, y);
+    };
+
+    centerText(instruction, 90);
+    centerText(text1, 210);
+    centerText(text2, 330);
+    centerText(text3, 450);
+
+
+
     while (startWindow.isOpen()) {
         Event event;
         while (startWindow.pollEvent(event)) {
@@ -121,7 +133,7 @@ int main() {
 
 
 
-    RenderWindow window(VideoMode(800, 700), "Adrian's Game");
+    RenderWindow window(VideoMode(1200, 800), "Adrian's Game");
     window.setFramerateLimit(50);
 
     vector fonts{font1, font2, font3};
@@ -144,27 +156,29 @@ int main() {
 
     Text scoreText;
     scoreText.setFont(fonts[ThisFont]);
-    scoreText.setCharacterSize(20);
+    scoreText.setCharacterSize(35);
     scoreText.setFillColor(Color::White);
-    scoreText.setPosition(10, 10);
+    scoreText.setPosition(25, 20);
     scoreText.setString("Punkty: " + to_string(score));
 
     Text LifeText;
     LifeText.setFont(fonts[ThisFont]);
-    LifeText.setCharacterSize(20);
+    LifeText.setCharacterSize(35);
     LifeText.setFillColor(Color::Red);
-    LifeText.setPosition(window.getSize().x - 200, 10);
+    LifeText.setPosition(window.getSize().x - 300, 20);
     LifeText.setString("Twoje zycia: " + to_string(MISTAKE_MAX - missedWords));
 
     Texture backgroundTexture;
-    backgroundTexture.loadFromFile("tlo.jpg");
-
+    backgroundTexture.loadFromFile("assets/images/tlo.jpg");
     Sprite backgroundSprite;
     backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setScale(
+    static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x,
+    static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y
+);
 
     Texture gameOverBackgroundTexture;
-    gameOverBackgroundTexture.loadFromFile("GameOverBlood.jpg");
-
+    gameOverBackgroundTexture.loadFromFile("assets/images/GameOverBlood.jpg");
     Sprite gameOverBackgroundSprite;
     gameOverBackgroundSprite.setTexture(gameOverBackgroundTexture);
 
@@ -235,17 +249,39 @@ int main() {
     }
 
     if (przegrana) {
-        RenderWindow gameoverwindow(VideoMode(500, 500), "Game Over!");
-        Text gameovertekst("Game Over!", fonts[ThisFont], 50);
+        RenderWindow gameoverwindow(VideoMode(700, 600), "Game Over!");
+        Text gameovertekst("Game Over!", fonts[ThisFont], 70);
         gameovertekst.setFillColor(Color::Red);
-        gameovertekst.setPosition(120, 210);
 
         Text finalScoreText;
         finalScoreText.setFont(fonts[ThisFont]);
-        finalScoreText.setCharacterSize(30);
+        finalScoreText.setCharacterSize(45);
         finalScoreText.setFillColor(Color::White);
-        finalScoreText.setPosition(170, 320);
         finalScoreText.setString("Wynik: " + to_string(score));
+
+        FloatRect gameOverBounds = gameovertekst.getLocalBounds();
+
+        gameovertekst.setOrigin(
+            gameOverBounds.left + gameOverBounds.width / 2.f,
+            gameOverBounds.top + gameOverBounds.height / 2.f
+        );
+
+        gameovertekst.setPosition(
+            gameoverwindow.getSize().x / 2.f,
+            250.f
+        );
+
+        FloatRect scoreBounds = finalScoreText.getLocalBounds();
+
+        finalScoreText.setOrigin(
+            scoreBounds.left + scoreBounds.width / 2.f,
+            scoreBounds.top + scoreBounds.height / 2.f
+        );
+
+        finalScoreText.setPosition(
+            gameoverwindow.getSize().x / 2.f,
+            370.f
+        );
 
         while (gameoverwindow.isOpen()) {
             Event event;
